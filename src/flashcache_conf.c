@@ -1153,6 +1153,10 @@ init:
 	dmc->num_whitelist_pids = 0;
 	dmc->num_blacklist_pids = 0;
 
+        //for ICASH
+        //dmc->v_blocks = (struct virtual_block *) 
+	//	kmalloc(sizeof(struct virtual_block)*dmc->size, GFP_KERNEL);
+
 	flashcache_ctr_procfs(dmc);
 
 	return 0;

@@ -1735,6 +1735,27 @@ flashcache_map(struct dm_target *ti, struct bio *bio,
 	return DM_MAPIO_SUBMITTED;
 }
 
+//for ICASH
+int 
+icashcache_map(struct dm_target *ti, struct bio *bio,
+	       union map_info *map_context)
+{
+	struct cache_c *dmc = (struct cache_c *) ti->private;
+	int sectors = to_sector(bio->bi_size);
+	
+	if (bio_barrier(bio))
+		return -EOPNOTSUPP;
+
+	VERIFY(to_sector(bio->bi_size) <= dmc->block_size);
+
+	if (bio_data_dir(bio) == READ) {
+            ;
+	} else {
+	    DPRINTK("Page address %s\n", bio_data(bio)); 
+        }
+	return DM_MAPIO_SUBMITTED;
+}
+
 /* Block sync support functions */
 static void 
 flashcache_kcopyd_callback_sync(int read_err, unsigned int write_err, void *context)

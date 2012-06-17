@@ -105,6 +105,24 @@
 #define FLASHCACHE_MAX_ASSOC	8192
 #define FLASHCACHE_LRU_NULL	0xFFFF
 
+//for ICASH
+#define SIG_NUM 256
+#define SUB_BLOCKS 8
+//in sectors
+#define BUF_SIZE (256*1024)
+//in bytes
+#define SECTOR_SIZE 512
+
+struct virtual_block {
+        char sign[SUB_BLOCKS];  //signatures
+        // reference block
+        struct virtual_block * r_block;
+        unsigned int rbn;  // in pages 4 KB
+        // delta block 
+        unsigned int db_size;  // in sectors
+        unsigned int dbn;  // in sectors
+        };
+
 struct cacheblock;
 
 struct cache_set {
@@ -291,6 +309,14 @@ struct cache_c {
 	struct sequential_io	seq_recent_ios[SEQUENTIAL_TRACKER_QUEUE_DEPTH];
 	struct sequential_io	*seq_io_head;
 	struct sequential_io 	*seq_io_tail;
+
+        //for ICASH
+        unsigned char heat_map[SUB_BLOCKS][SIG_NUM]; 
+        // hash table : ICASH cache block structure index--LBA
+        struct virtual_block *v_blocks;
+        //hdd RAM buffer
+        unsigned char hdd_buffer[BUF_SIZE][SECTOR_SIZE]; 
+        
 };
 
 /* kcached/pending job states */

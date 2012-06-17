@@ -385,6 +385,8 @@ new_kcached_job(struct cache_c *dmc, struct bio* bio, int index)
 		dmc->flashcache_errors.memory_alloc_errors++;
 		return NULL;
 	}
+        //printk(KERNEL_ALERT "Test size: %d\n",
+	//	dmc->block_size);
 	job->dmc = dmc;
 	job->index = index;
 	job->job_io_regions.cache.bdev = dmc->cache_dev->bdev;
